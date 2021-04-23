@@ -22,13 +22,15 @@ def pos_matrix(pos):
     return mtx.to_translation()
 
 
+LINK_QUEUE = []
+
 def copy(obj, parent):
     if obj is None: return None
     new_obj = obj.copy()
     if obj.data is not None:
-        new_obj.data = obj.data.copy()
+        new_obj.data == obj.data.copy()
     new_obj.parent = parent
-    bpyhelper.scene_link(new_obj)
+    LINK_QUEUE.append(new_obj)
     for child in obj.children:
         copy(child, new_obj)
     return new_obj
@@ -274,7 +276,11 @@ def read(settings, importObjects=False, importDetails=True, importPhysics=False,
             progress_update(total, prog, ob)
 
     LIGHT_MAP = ['SUN', 'SPOT', 'POINT']
-
+    
+    
+    for obj in LINK_QUEUE:
+        bpyhelper.scene_link(obj)
+    LINK_QUEUE = []
     if light_settings.enabled:
         globLight = bpy.data.objects.new(name + '_LIGHTS', None)
         globLight.hide_viewport = True
