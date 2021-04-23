@@ -28,7 +28,7 @@ def copy(obj, parent):
     if obj is None: return None
     new_obj = obj.copy()
     if obj.data is not None:
-        new_obj.data == obj.data.copy()
+        new_obj.data = obj.data.copy()
     new_obj.parent = parent
     link_queue.append(new_obj)
     for child in obj.children:
